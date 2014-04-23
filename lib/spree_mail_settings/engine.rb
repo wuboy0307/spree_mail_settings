@@ -17,8 +17,10 @@ module SpreeMailSettings
 
     initializer "spree_mail_settings" do |app|
       ActionMailer::Base.add_delivery_method :spree, Spree::Core::MailMethod
-      Spree::Core::MailSettings.init
-      Mail.register_interceptor(Spree::Core::MailInterceptor)
+      if ActiveRecord::Base.connection.table_exists? 'spree_stores'
+        Spree::Core::MailSettings.init
+        Mail.register_interceptor(Spree::Core::MailInterceptor)
+      end
     end
 
     config.to_prepare &method(:activate).to_proc
