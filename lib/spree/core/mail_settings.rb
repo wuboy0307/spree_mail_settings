@@ -9,7 +9,7 @@ module Spree
       # interface instead of requiring changes to the Rails envrionment file
       def self.init
         ActionMailer::Base.delivery_method = :spree
-        ActionMailer::Base.default_url_options[:host] ||= Config.site_url
+        ActionMailer::Base.default_url_options[:host] ||= Spree::Store.default.url
       end
 
       def mail_server_settings
