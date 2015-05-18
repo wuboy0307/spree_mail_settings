@@ -13,6 +13,14 @@ module Spree
     preference :mail_auth_type, :string, :default => Core::MailSettings::MAIL_AUTH[0]
     preference :smtp_username, :string
     preference :smtp_password, :string
+    preference :mails_from, :string
+
+    alias_method :old_preferred_mails_from=, :preferred_mails_from=
+
+    def preferred_mails_from=(from)
+      Spree::Store.default.update(:mail_from_address => from) if Spree::Store.default
+      preferences[:mails_from]= from
+    end
 
     def override_actionmailer_config
       raise "override_actionmailer_config has been removed. actionmailer's config is always overwridden when spree_mail_settings is included"
